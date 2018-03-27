@@ -1,0 +1,1 @@
+<li><g:link controller="produto" action="index" class="waves-effect waves-light"><i class="material-icons left">unarchive</i>Produtos</g:link></li>
