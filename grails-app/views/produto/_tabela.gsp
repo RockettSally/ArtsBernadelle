@@ -1,11 +1,10 @@
+<%@page import="br.com.rockettsally.artsbernadelle.main.ParseService"%>
+
 <g:set var="index" value="${0}"></g:set>
 <table id="tableProdutosList" class="datatable bordered highlight">
 	<thead>
 		<tr>
-			<th style="width:100px;">
-				Nº
-			</th>
-			<th>
+			<th style="width:85px !important;">
 				Cod.
 			</th>
 			<th>
@@ -14,17 +13,13 @@
 			<th>
 				Valor de Venda
 			</th>
-			<th>
-				
+			<th class="noSort" style="width:50px !important;">
 			</th>
 		</tr>
 	</thead>
 	<tbody>
 	<g:each in="${produtoList}" var="produtoInstance">
 		<tr>
-			<td style="width:50px !important;">
-				${++index}
-			</td>
 			<td>
 				${produtoInstance?.codigo}
 			</td>
@@ -32,7 +27,7 @@
 				${produtoInstance?.nome}
 			</td>
 			<td>
-				${produtoInstance?.valorVenda ?: '-'}
+				${produtoInstance?.valorVenda ? 'R$ ' + new ParseService().numberToString(produtoInstance?.valorVenda) : '-'}
 			</td>
 			<td>
 				<a href="javascript:void(0)" id="editarProduto" class="blue-text" title="Editar Cadastro - ${produtoInstance?.nome}" data-produto="${produtoInstance?.id}"><i class="material-icons small">edit</i></a>

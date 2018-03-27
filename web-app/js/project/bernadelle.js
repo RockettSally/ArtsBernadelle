@@ -46,7 +46,18 @@ function updateMasks() {
 }
 
 function successToast(msg){
+	Materialize.Toast.removeAll();
 	Materialize.toast(msg, 3000, 'rounded green');
+}
+
+function warningToast(msg){
+	Materialize.Toast.removeAll();
+	Materialize.toast(msg, 3000, 'rounded orange');
+}
+
+function dangerToast(msg){
+	Materialize.Toast.removeAll();
+	Materialize.toast(msg, 3000, 'rounded red');
 }
 
 function updateFilters(){

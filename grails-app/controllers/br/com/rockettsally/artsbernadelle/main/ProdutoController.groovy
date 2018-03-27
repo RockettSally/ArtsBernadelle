@@ -4,7 +4,7 @@ import grails.converters.JSON;
 
 import org.springframework.http.HttpStatus;
 
-class ProdutoController {
+class ProdutoController extends BaseController{
 	
 	String actionLabel;
 	String productName;
@@ -33,7 +33,7 @@ class ProdutoController {
 		Produto produtoInstance = Produto.findById(id);
 		actionLabel = "Editar Cadastro -";
 		productName = "(${produtoInstance?.codigo}) ${produtoInstance?.nome}";
-		render(template:"../produto/form",model:[produtoInstance: produtoInstance, actionLabel:actionLabel, clientName:productName]);
+		render(template:"../produto/form",model:[produtoInstance: produtoInstance, actionLabel:actionLabel, productName:productName]);
 	}
 	
 	def salvar(Long id){
@@ -41,6 +41,15 @@ class ProdutoController {
 		String msg;
 		try {
 			Produto produtoInstance = Produto.findById(id);
+			Produto produtoExistente = Produto.findByCodigo(params['codigo']);
+			
+			if(produtoExistente && produtoInstance != produtoExistente){
+				msg = "Ja existe um Produto com este código.";
+				result = [status:Boolean.FALSE, msg: msg];
+				render result as JSON;
+				return;
+			}
+			
 			if(produtoInstance){
 				produtoInstance.properties = params;
 				msg = "Produto Editado com Sucesso!";
@@ -51,6 +60,7 @@ class ProdutoController {
 			produtoInstance.save(flush:true,failOnError:true);
 			result = [status:Boolean.TRUE, msg: msg];
 			render result as JSON;
+			
 		} catch (Exception e) {
 			log.error("Ocorreu um erro no método 'salvar' do controller 'Produto' " , e.printStackTrace());
 			render(status:HttpStatus.INTERNAL_SERVER_ERROR);

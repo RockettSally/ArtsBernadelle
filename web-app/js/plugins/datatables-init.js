@@ -35,7 +35,9 @@ function criarDataTables(){
 		        "sSortAscending": ": Ordenar colunas de forma ascendente",
 		        "sSortDescending": ": Ordenar colunas de forma descendente"
 		    }
-		}
-		
+		},
+		aoColumnDefs: [{ 
+			bSortable: false, aTargets: ['noSort'] 
+		}]
 	});
 }
