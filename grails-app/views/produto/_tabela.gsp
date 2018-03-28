@@ -7,8 +7,11 @@
 			<th style="width:85px !important;">
 				Cod.
 			</th>
-			<th>
+			<th style="width:60% !important;">
 				Nome
+			</th>
+			<th>
+				Tipo de Produto
 			</th>
 			<th>
 				Valor de Venda
@@ -24,7 +27,10 @@
 				${produtoInstance?.codigo}
 			</td>
 			<td>
-				${produtoInstance?.nome}
+				<b>${produtoInstance?.nome}</b>
+			</td>
+			<td>
+				${produtoInstance?.tipoProduto?.nome}
 			</td>
 			<td>
 				${produtoInstance?.valorVenda ? 'R$ ' + new ParseService().numberToString(produtoInstance?.valorVenda) : '-'}
