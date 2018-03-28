@@ -43,7 +43,7 @@
 	<body>
 	<nav class="blue darken-4">
 		<div class="nav-wrapper padding">
-			<a href="../" class="bernadelle-logo">Arts Bernadelle</a>
+			<g:link controller="painel" action="index" class="bernadelle-logo waves-effect waves-light">Arts Bernadelle</g:link>
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 				
 			<ul id="nav-mobile" class="right hide-on-med-and-down">

@@ -1,3 +1,7 @@
+<div id="cadastroTipoProduto" class="display-none">
+	<g:render template="modalTipoProduto"></g:render>
+</div>
+
 <g:form action="salvarCadastroExistente" controller="produto" class="formProduto">
 	<fieldset>
 	<div class="row title-row">
@@ -15,10 +19,10 @@
 	        <g:textField name="nome" id="nome" type="text" required class="nome" value="${produtoInstance?.nome}"/>
 	        <label for="nome">Nome do Produto <b>*</b></label>
         </div>
-		<div class="input-field col s12 l4">
-        	<i class="fas fa-list-ul small prefix"></i>
-	        <g:select name="tipoProduto" id="tipoProduto" class="tipoProduto" from="" optionKey="id" optionValue="nome" noSelection="${['null':'Selecione...']}" value="${produtoInstance?.tipoProduto}"/>
-	        <label for="tipoProduto">Tipo de Produto</label>
+		<div class="col s12 l4">
+        	<i class="fas fa-list-ul small prefix"></i><label for="tipoProduto">Tipo de Produto</label>
+	        <g:select name="tipoProduto.id" id="tipoProduto" class="tipoProduto browser-default" from="${listTipoProduto}" optionKey="id" optionValue="nome" noSelection="${['null':'Selecione...']}" value="${produtoInstance?.tipoProduto?.id}"/>
+       	 <a id="abrirModalTipoProduto" href="javascript:void(0)" class="modal-trigger"><i class="material-icons tiny">add_circle</i> Novo Tipo de Produto</a>
         </div>
 	</div>
 	<div class="row">

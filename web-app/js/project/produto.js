@@ -3,6 +3,8 @@ jQuery(document).ready(function(){
 	console.log('Hello produto.js');
 	buscarProdutos();
 	
+	var modalOpen = false;
+	
 	jQuery(document).on('click','#cadastrarProduto',function(){
 		cadastrarProduto();
 	});
@@ -12,10 +14,33 @@ jQuery(document).ready(function(){
 		editarProduto(idProduto);
 	});
 	
+	jQuery(document).on('click','#abrirModalTipoProduto',function(){
+		if(!modalOpen){
+			jQuery('#cadastroTipoProduto').show(500);
+			modalOpen = true;
+		} else {
+			jQuery('#cadastroTipoProduto').hide(500);
+			modalOpen = false;
+		}
+	});
+	
+	jQuery(document).on('submit','.formTipoProduto',function(event){
+		event.preventDefault();
+		event.stopPropagation();
+		salvarTipoProduto(jQuery(this));
+		return false;
+	});
+	
 	jQuery(document).on('submit','.formProduto',function(event){
 		event.preventDefault();
 		event.stopPropagation();
 		if(jQuery('#valorVenda').val() < 0){
+			focusInput('#valorVenda');
+			successToast('O valor não pode ser negativo!');
+			return false;
+		}
+		if(jQuery('#valorCusto').val() < 0){
+			focusInput('#valorCusto');
 			successToast('O valor não pode ser negativo!');
 			return false;
 		}
@@ -25,6 +50,18 @@ jQuery(document).ready(function(){
 	
 	jQuery(document).on('click','#cancelarCadastroProduto',function(){
 		cancelarCadastro();
+	});
+	
+	jQuery(document).on('click','#cancelarCadastroTipoProduto',function(){
+		cancelarCadastroTipoProduto();
+	});
+	
+	jQuery(document).on('focusout','#valorVenda',function(){
+		jQuery(this).val(currencyParseFloat('#valorVenda'));
+	});
+	
+	jQuery(document).on('focusout','#valorCusto',function(){
+		jQuery(this).val(currencyParseFloat('#valorCusto'));
 	});
 	
 	jQuery(document).on('click','#deletarProduto',function(){
@@ -88,6 +125,7 @@ function cadastrarProduto(){
 			hideLoading();
 			updateFilters();
 			updateMasks();
+			fixCurrencyInputs();
 			return;
 		}
 	});
@@ -106,6 +144,7 @@ function salvarProduto($theForm){
 				successToast(data.msg);
 				buscarProdutos();
 			} else {
+				focusInput('#codigo');
 				warningToast(data.msg);
 				hideLoading();
 			}
@@ -139,8 +178,10 @@ function editarProduto(idProduto){
 		},
 		complete: function(){
 			Materialize.updateTextFields();
+			updateFilters();
 			updateMasks();
 			hideLoading();
+			fixCurrencyInputs();
 			return;
 		}
 	});
@@ -176,4 +217,64 @@ function deletarProduto(idProduto){
 function cancelarCadastro(){
 	jQuery('#divFormProduto').hide(500);
 	buscarProdutos();
+}
+
+function cancelarCadastroTipoProduto(){
+	jQuery('#cadastroTipoProduto').hide(500);
+	modalOpen = false;
+}
+
+function salvarTipoProduto($theForm){
+	showLoading('Salvando Tipo Produto...');
+	jQuery.ajax({
+		url: "../tipoProduto/salvar",
+		method: "POST",
+		dataType: "JSON",
+		data: $theForm.serialize(),
+		success: function(data){
+			if(data.status){
+				jQuery('#cadastroTipoProduto').hide(500);
+				successToast(data.msg);
+				atualizarSelectTipoProduto();
+			} else {
+				focusInput('#codigo');
+				warningToast(data.msg);
+			}
+		},
+		error: function(request, status, error, data) {
+			dialogError('Oops','Ocorreu um erro interno de Servidor');
+		},
+		complete: function(){
+			hideLoading();
+			return;
+		}
+	});
+}
+
+function atualizarSelectTipoProduto(){
+	jQuery('.tipoProduto').empty();
+	jQuery('.tipoProduto').append(new Option('Selecione', ''));
+	jQuery('.tipoProduto').trigger('chosen:updated');
+	
+	jQuery.ajax({
+		url: "../tipoProduto/atualizarSelect",
+		type: "POST",
+		dataType: "json",
+		success : function(data) {
+			jQuery(data.listTipoProduto).each(function( index, element ) {
+				jQuery('.tipoProduto').append(new Option(element.nome, element.id));
+			});
+		},
+		error : function(request, status, error, data) {
+			dialogError('Oops!', 'Ocorreu um erro interno de Servidor');
+		}
+	}).done(function() {
+		jQuery('.tipoProduto').trigger('chosen:updated');
+		console.log("Select Built!");
+	});
+}
+
+function fixCurrencyInputs(){
+	jQuery('#valorVenda').val(fixCurrency('#valorVenda'));
+	jQuery('#valorCusto').val(fixCurrency('#valorCusto'));
 }

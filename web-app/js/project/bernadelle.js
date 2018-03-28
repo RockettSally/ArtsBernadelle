@@ -40,7 +40,7 @@ function updateMasks() {
 	$('.cnpj').mask('00.000.000/0000-00', {
 		reverse : true
 	});
-	$('.money').mask("#.##0,00", {
+	$('.money').mask("##0,00", {
 		reverse : true
 	});
 }
@@ -62,4 +62,25 @@ function dangerToast(msg){
 
 function updateFilters(){
 	jQuery('select').material_select();
+}
+
+function focusInput(input){
+	jQuery(input).focus()
+}
+
+function fixCurrency(input){
+	return jQuery(input).val().replace('.',',');
+}
+
+function currencyParseFloat(input){
+	console.log('Hello currencyParseFloat');
+	var number = jQuery(input).val()
+	var numberConverted = number.replace(',','.');
+	var numberParsed = 0;
+	if(number){
+		numberParsed = parseFloat(numberConverted).toFixed(2);
+	} else {
+		numberParsed = parseFloat(0).toFixed(2);
+	}
+	return numberParsed.replace('.',',');
 }

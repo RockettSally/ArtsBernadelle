@@ -26,14 +26,16 @@ class ProdutoController extends BaseController{
 	def cadastrar(){
 		actionLabel = "Adicionar";
 		productName = "Produto";
-		render(template:"../produto/form",model:[produtoInstance:new Produto(), actionLabel:actionLabel, productName:productName]);
+		List<TipoProduto> listTipoProduto = TipoProduto.findAll();
+		render(template:"../produto/form",model:[produtoInstance:new Produto(), actionLabel:actionLabel, productName:productName, listTipoProduto:listTipoProduto]);
 	}
 	
 	def editar(Long id){	
 		Produto produtoInstance = Produto.findById(id);
+		List<TipoProduto> listTipoProduto = TipoProduto.findAll();
 		actionLabel = "Editar Cadastro -";
 		productName = "(${produtoInstance?.codigo}) ${produtoInstance?.nome}";
-		render(template:"../produto/form",model:[produtoInstance: produtoInstance, actionLabel:actionLabel, productName:productName]);
+		render(template:"../produto/form",model:[produtoInstance: produtoInstance, actionLabel:actionLabel, productName:productName, listTipoProduto:listTipoProduto]);
 	}
 	
 	def salvar(Long id){
@@ -63,6 +65,27 @@ class ProdutoController extends BaseController{
 			
 		} catch (Exception e) {
 			log.error("Ocorreu um erro no método 'salvar' do controller 'Produto' " , e.printStackTrace());
+			render(status:HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	def deletar(Long id){
+		def result = [];
+		try {
+			Produto produtoInstance = Produto.get(id);
+			if(!produtoInstance){
+				render(status:HttpStatus.BAD_REQUEST);
+				log.error("Não há produto selecionado para deletar, tente novamente!");
+				return
+			}
+
+			produtoInstance?.delete(flush:true,failOnError:true);
+			result = [status:Boolean.TRUE, msg: 'Cadastro Removido com Sucesso'];
+			
+			render result as JSON;
+			
+		} catch (Exception e) {
+			log.error("Ocorreu um erro no método 'deletar' do controller 'Produto' " , e.printStackTrace());
 			render(status:HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
