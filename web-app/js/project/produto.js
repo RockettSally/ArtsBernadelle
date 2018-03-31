@@ -233,9 +233,10 @@ function salvarTipoProduto($theForm){
 		data: $theForm.serialize(),
 		success: function(data){
 			if(data.status){
-				jQuery('#cadastroTipoProduto').hide(500);
 				successToast(data.msg);
-				atualizarSelectTipoProduto();
+				resetForm('.formTipoProduto');
+				jQuery('#cadastroTipoProduto').hide(500);
+				atualizarSelectTipoProduto(data.tipoProdutoInstance.id);
 			} else {
 				focusInput('#codigo');
 				warningToast(data.msg);
@@ -251,19 +252,24 @@ function salvarTipoProduto($theForm){
 	});
 }
 
-function atualizarSelectTipoProduto(){
+function atualizarSelectTipoProduto(idProdutoCriado){
+	console.log(idProdutoCriado);
 	jQuery('.tipoProduto').empty();
 	jQuery('.tipoProduto').append(new Option('Selecione', ''));
 	jQuery('.tipoProduto').trigger('chosen:updated');
 	
 	jQuery.ajax({
 		url: "../tipoProduto/atualizarSelect",
-		type: "POST",
+		type: "GET",
 		dataType: "json",
+		data: {
+			id: idProdutoCriado
+		},
 		success : function(data) {
 			jQuery(data.listTipoProduto).each(function( index, element ) {
 				jQuery('.tipoProduto').append(new Option(element.nome, element.id));
 			});
+			jQuery('.tipoProduto').val(data.tipoProdutoInstance.id);
 		},
 		error : function(request, status, error, data) {
 			dialogError('Oops!', 'Ocorreu um erro interno de Servidor');

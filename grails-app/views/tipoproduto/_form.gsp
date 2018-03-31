@@ -1,12 +1,13 @@
 <!-- Modal Structure -->
-<g:form action="salvar" controller="tipoProduto" class="formTipoProduto">
+<g:form id="formTipoProduto" action="salvar" controller="tipoProduto" class="formTipoProduto">
 	<fieldset>
 		<div class="row title-row">
 			<div class="col s12">
-				<h5>Tipo de Produto</h5>
+				<h5>${subActionLabel ? subActionLabel + ' ' : ''}${productTypeName ?: 'Tipo de Produto'}</h5>
 			</div>
 		</div>
 		<div class="input-field col s12 l6">
+			<g:hiddenField name="id" value="${tipoProdutoInstance?.id}"/>
 			<i class="material-icons prefix">label_outline</i>
 			<g:textField name="nome" id="nome" type="text" required class="nome" value="${tipoProdutoInstance?.nome}"/>
 			<label for="nome">Nome do Produto <b>*</b></label>

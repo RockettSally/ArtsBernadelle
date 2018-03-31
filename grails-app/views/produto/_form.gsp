@@ -1,5 +1,5 @@
 <div id="cadastroTipoProduto" class="display-none">
-	<g:render template="modalTipoProduto"></g:render>
+	<g:render template="../tipoproduto/form"></g:render>
 </div>
 
 <g:form action="salvarCadastroExistente" controller="produto" class="formProduto">

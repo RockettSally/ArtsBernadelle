@@ -25,7 +25,7 @@
 		
 		<!-- Script Import -->		
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-				<g:javascript src="plugins/jquery.mask.min.js" />
+		<g:javascript src="plugins/jquery.mask.min.js" />
 		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
@@ -36,7 +36,7 @@
 		<g:javascript src="plugins/printThis.js" />
 		<g:javascript src="plugins/datatables-init.js" />
 		<g:javascript src="project/bernadelle.js"/>	
-
+		
 		<g:layoutHead/>
 		<r:layoutResources />
 	</head>

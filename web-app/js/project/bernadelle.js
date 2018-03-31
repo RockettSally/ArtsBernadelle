@@ -1,6 +1,20 @@
 jQuery(document).ready(function(){
 	console.log('Hello bernadele.js');
 	jQuery(".button-collapse").sideNav();
+	jQuery('#dropMenu').dropdown({
+		inDuration : 300,
+		outDuration : 225,
+		constrainWidth : false, 
+		hover : true,
+		gutter : 0, 
+		belowOrigin : true,
+		alignment : 'left',
+		stopPropagation : false
+	});
+	
+	jQuery(document).on('click','#aboutSystem',function(){
+		swal('Arts Bernadelle ERP','Desenvolvido por RockettSally - v0.0.4','info');
+	});
 });
 
 function showLoading(msg){
@@ -83,4 +97,9 @@ function currencyParseFloat(input){
 		numberParsed = parseFloat(0).toFixed(2);
 	}
 	return numberParsed.replace('.',',');
+}
+
+function resetForm(form){
+	console.log(form);
+	jQuery(form)[0].reset();
 }
