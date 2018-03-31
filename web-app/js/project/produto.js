@@ -3,7 +3,8 @@ jQuery(document).ready(function(){
 	console.log('Hello produto.js');
 	buscarProdutos();
 	
-	var modalOpen = false;
+	var modalTipoProdutoOpen = false;
+	var modalFornecedorOpen = false;
 	
 	jQuery(document).on('click','#cadastrarProduto',function(){
 		cadastrarProduto();
@@ -15,12 +16,22 @@ jQuery(document).ready(function(){
 	});
 	
 	jQuery(document).on('click','#abrirModalTipoProduto',function(){
-		if(!modalOpen){
+		if(!modalTipoProdutoOpen){
 			jQuery('#cadastroTipoProduto').show(500);
-			modalOpen = true;
+			modalTipoProdutoOpen = true;
 		} else {
 			jQuery('#cadastroTipoProduto').hide(500);
-			modalOpen = false;
+			modalTipoProdutoOpen = false;
+		}
+	});
+	
+	jQuery(document).on('click','#abrirModalFornecedor',function(){
+		if(!modalFornecedorOpen){
+			jQuery('#cadastroFornecedor').show(500);
+			modalFornecedorOpen = true;
+		} else {
+			jQuery('#cadastroFornecedor').hide(500);
+			modalFornecedorOpen = false;
 		}
 	});
 	
@@ -28,6 +39,13 @@ jQuery(document).ready(function(){
 		event.preventDefault();
 		event.stopPropagation();
 		salvarTipoProduto(jQuery(this));
+		return false;
+	});
+	
+	jQuery(document).on('submit','.formFornecedor',function(event){
+		event.preventDefault();
+		event.stopPropagation();
+		salvarFornecedor(jQuery(this));
 		return false;
 	});
 	
@@ -56,12 +74,18 @@ jQuery(document).ready(function(){
 		cancelarCadastroTipoProduto();
 	});
 	
+	jQuery(document).on('click','#cancelarCadastroFornecedor',function(){
+		cancelarCadastroFornecedor();
+	});
+	
 	jQuery(document).on('focusout','#valorVenda',function(){
 		jQuery(this).val(currencyParseFloat('#valorVenda'));
+		Materialize.updateTextFields();
 	});
 	
 	jQuery(document).on('focusout','#valorCusto',function(){
 		jQuery(this).val(currencyParseFloat('#valorCusto'));
+		Materialize.updateTextFields();
 	});
 	
 	jQuery(document).on('click','#deletarProduto',function(){
@@ -220,8 +244,13 @@ function cancelarCadastro(){
 }
 
 function cancelarCadastroTipoProduto(){
+	modalTipoProdutoOpen = false;
 	jQuery('#cadastroTipoProduto').hide(500);
-	modalOpen = false;
+}
+
+function cancelarCadastroFornecedor(){
+	modalFornecedorOpen = false;
+	jQuery('#cadastroFornecedor').hide(500);
 }
 
 function salvarTipoProduto($theForm){
@@ -238,7 +267,6 @@ function salvarTipoProduto($theForm){
 				jQuery('#cadastroTipoProduto').hide(500);
 				atualizarSelectTipoProduto(data.tipoProdutoInstance.id);
 			} else {
-				focusInput('#codigo');
 				warningToast(data.msg);
 			}
 		},
@@ -253,7 +281,6 @@ function salvarTipoProduto($theForm){
 }
 
 function atualizarSelectTipoProduto(idProdutoCriado){
-	console.log(idProdutoCriado);
 	jQuery('.tipoProduto').empty();
 	jQuery('.tipoProduto').append(new Option('Selecione', ''));
 	jQuery('.tipoProduto').trigger('chosen:updated');
@@ -276,6 +303,61 @@ function atualizarSelectTipoProduto(idProdutoCriado){
 		}
 	}).done(function() {
 		jQuery('.tipoProduto').trigger('chosen:updated');
+		console.log("Select Built!");
+	});
+}
+
+
+function salvarFornecedor($theForm){
+	showLoading('Salvando Fornecedor...');
+	jQuery.ajax({
+		url: "../fornecedor/salvar",
+		method: "POST",
+		dataType: "JSON",
+		data: $theForm.serialize(),
+		success: function(data){
+			if(data.status){
+				successToast(data.msg);
+				resetForm('.formFornecedor');
+				jQuery('#cadastroFornecedor').hide(500);
+				atualizarSelectFornecedor(data.fornecedorInstance.id);
+			} else {
+				warningToast(data.msg);
+			}
+		},
+		error: function(request, status, error, data) {
+			dialogError('Oops','Ocorreu um erro interno de Servidor');
+		},
+		complete: function(){
+			hideLoading();
+			return;
+		}
+	});
+}
+
+function atualizarSelectFornecedor(idFornecedor){
+	jQuery('.fornecedor').empty();
+	jQuery('.fornecedor').append(new Option('Nenhum', ''));
+	jQuery('.fornecedor').trigger('chosen:updated');
+	
+	jQuery.ajax({
+		url: "../fornecedor/atualizarSelect",
+		type: "GET",
+		dataType: "json",
+		data: {
+			id: idFornecedor
+		},
+		success : function(data) {
+			jQuery(data.listFornecedor).each(function( index, element ) {
+				jQuery('.fornecedor').append(new Option(element.nome, element.id));
+			});
+			jQuery('.fornecedor').val(data.fornecedorInstance.id);
+		},
+		error : function(request, status, error, data) {
+			dialogError('Oops!', 'Ocorreu um erro interno de Servidor');
+		}
+	}).done(function() {
+		jQuery('.fornecedor').trigger('chosen:updated');
 		console.log("Select Built!");
 	});
 }

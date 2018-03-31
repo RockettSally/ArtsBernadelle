@@ -1,4 +1,3 @@
-<!-- Modal Structure -->
 <g:form id="formTipoProduto" action="salvar" controller="tipoProduto" class="formTipoProduto">
 	<fieldset>
 		<div class="row title-row">

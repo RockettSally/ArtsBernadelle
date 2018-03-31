@@ -1,30 +1,30 @@
 jQuery(document).ready(function(){
 	
-	console.log('Hello tipoProduto.js');
-	buscarTipoProdutos();
+	console.log('Hello fornecedor.js');
+	buscarFornecedores();
 	
-	jQuery(document).on('click','#cadastrarTipoProduto',function(){
-		cadastrarTipoProduto();
+	jQuery(document).on('click','#cadastrarFornecedor',function(){
+		cadastrarFornecedor();
 	});
 	
-	jQuery(document).on('submit','.formTipoProduto',function(event){
+	jQuery(document).on('submit','.formFornecedor',function(event){
 		event.preventDefault();
 		event.stopPropagation();
-		salvarTipoProduto(jQuery(this));
+		salvarFornecedor(jQuery(this));
 		return false;
 	});
 	
-	jQuery(document).on('click','#editarTipoProduto',function(){
-		idTipoProduto = jQuery(this).attr('data-tipo-produto');
-		editarTipoProduto(idTipoProduto);
+	jQuery(document).on('click','#editarFornecedor',function(){
+		idFornecedor = jQuery(this).attr('data-fornecedor');
+		editarFornecedor(idFornecedor);
 	});
 	
-	jQuery(document).on('click','#cancelarCadastroTipoProduto',function(){
+	jQuery(document).on('click','#cancelarCadastroFornecedor',function(){
 		cancelarCadastro();
 	});
 	
-	jQuery(document).on('click','#deletarTipoProduto',function(){
-		idTipoProduto = jQuery(this).attr('data-tipo-produto');
+	jQuery(document).on('click','#deletarFornecedor',function(){
+		idFornecedor = jQuery(this).attr('data-fornecedor');
 		swal({
 			title: "Deletar Cadastro",
 			text: 'Você tem certeza que deseja remover este cadastro?',
@@ -34,7 +34,7 @@ jQuery(document).ready(function(){
 			cancelButtonText: "Cancelar",
 			focusConfirm: false,
 		}).then(function (){
-			deletarTipoProduto(idTipoProduto);
+			deletarFornecedor(idFornecedor);
 		}, function (dismiss) {
 			if (dismiss === 'cancel') {
 				return
@@ -44,15 +44,15 @@ jQuery(document).ready(function(){
 	
 });
 
-function buscarTipoProdutos(){
-	showLoading('Carregando Tipos de Produto...');
+function buscarFornecedores(){
+	showLoading('Carregando Fornecedores...');
 	jQuery.ajax({
-		url: "buscarTipoProdutos",
+		url: "buscarFornecedores",
 		method: "GET",
 		dataType: "html",
 		success: function(data){
-			jQuery('#tabelaTipoProdutos').html(data);
-			jQuery('#tabelaTipoProdutos').show(500);
+			jQuery('#tabelaFornecedor').html(data);
+			jQuery('#tabelaFornecedor').show(500);
 			criarDataTables();
 		},
 		error: function(request, status, error, data) {
@@ -65,16 +65,16 @@ function buscarTipoProdutos(){
 	});
 }
 
-function cadastrarTipoProduto(){
+function cadastrarFornecedor(){
 	showLoading('Carregando Formulário...');
 	jQuery.ajax({
 		url: "cadastrar",
 		method: "GET",
 		dataType: "html",
 		success: function(data){
-			jQuery('#divFormTipoProduto').html(data);
-			jQuery('#divFormTipoProduto').show(500);
-			jQuery('#tabelaTipoProdutos').hide(500);
+			jQuery('#divFormFornecedor').html(data);
+			jQuery('#divFormFornecedor').show(500);
+			jQuery('#tabelaFornecedor').hide(500);
 		},
 		error: function(request, status, error, data) {
 			dialogError('Oops','Ocorreu um erro interno de Servidor');
@@ -87,7 +87,7 @@ function cadastrarTipoProduto(){
 	});
 }
 
-function salvarTipoProduto($theForm){
+function salvarFornecedor($theForm){
 	showLoading('Salvando Tipo de Produto...');
 	jQuery.ajax({
 		url: "salvar",
@@ -96,9 +96,9 @@ function salvarTipoProduto($theForm){
 		data: $theForm.serialize(),
 		success: function(data){
 			if(data.status){
-				jQuery('#divFormTipoProduto').hide(500);
+				jQuery('#divFormFornecedor').hide(500);
 				successToast(data.msg);
-				buscarTipoProdutos();
+				buscarFornecedores();
 			} else {
 				focusInput('#nome');
 				warningToast(data.msg);
@@ -115,19 +115,19 @@ function salvarTipoProduto($theForm){
 	});
 }
 
-function editarTipoProduto(idTipoProduto){
-	showLoading('Carregando Tipo de Produto...');
+function editarFornecedor(idFornecedor){
+	showLoading('Carregando Fornecedor...');
 	jQuery.ajax({
 		url: "editar",
 		method: "GET",
 		dataType: "html",
 		data: {
-			id:idTipoProduto
+			id:idFornecedor
 		},
 		success: function(data){
-			jQuery('#divFormTipoProduto').html(data);
-			jQuery('#divFormTipoProduto').show(500);
-			jQuery('#tabelaTipoProdutos').hide(500);
+			jQuery('#divFormFornecedor').html(data);
+			jQuery('#divFormFornecedor').show(500);
+			jQuery('#tabelaFornecedor').hide(500);
 		},
 		error: function(request, status, error, data) {
 			dialogError('Oops','Ocorreu um erro interno de Servidor');
@@ -141,24 +141,24 @@ function editarTipoProduto(idTipoProduto){
 }
 
 function cancelarCadastro(){
-	resetForm('.formTipoProduto');
-	jQuery('#divFormTipoProduto').hide(500);
-	buscarTipoProdutos();
+	resetForm('.formFornecedor');
+	jQuery('#divFormFornecedor').hide(500);
+	buscarFornecedores();
 }
 
-function deletarTipoProduto(idProduto){
+function deletarFornecedor(idFornecedor){
 	showLoading('Removendo Cadastro...');
 	jQuery.ajax({
 		url: "deletar",
 		method: "POST",
 		dataType: "JSON",
 		data: {
-			id:idProduto
+			id:idFornecedor
 		},
 		success: function(data){
 			if(data.status){
 				successToast(data.msg);
-				buscarTipoProdutos();	
+				buscarFornecedores();	
 			} else {
 				dialogError('Não foi possivel Remover', data.msg);
 			}

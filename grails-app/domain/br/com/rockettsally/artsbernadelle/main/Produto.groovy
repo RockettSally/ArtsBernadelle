@@ -7,6 +7,7 @@ class Produto {
 	BigDecimal valorVenda
 	BigDecimal valorCusto
 	TipoProduto tipoProduto
+	Fornecedor fornecedor
 	
     static constraints = {
 		nome(nullable:true);
@@ -14,5 +15,6 @@ class Produto {
 		valorVenda(nullable:true);
 		valorCusto(nullable:true);
 		tipoProduto(nullable:true);
+		fornecedor(nullable:true);
     }
 }

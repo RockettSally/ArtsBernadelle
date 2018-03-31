@@ -24,18 +24,20 @@ class ProdutoController extends BaseController{
 	}
 	
 	def cadastrar(){
+		List<TipoProduto> listTipoProduto = TipoProduto.findAll();
+		List<Fornecedor> listFornecedor = Fornecedor.findAll();
 		actionLabel = "Adicionar";
 		productName = "Produto";
-		List<TipoProduto> listTipoProduto = TipoProduto.findAll();
-		render(template:"../produto/form",model:[produtoInstance:new Produto(), actionLabel:actionLabel, productName:productName, listTipoProduto:listTipoProduto]);
+		render(template:"../produto/form",model:[produtoInstance:new Produto(), actionLabel:actionLabel, productName:productName, listTipoProduto:listTipoProduto, listFornecedor:listFornecedor]);
 	}
 	
-	def editar(Long id){	
+	def editar(Long id){
 		Produto produtoInstance = Produto.findById(id);
 		List<TipoProduto> listTipoProduto = TipoProduto.findAll();
+		List<Fornecedor> listFornecedor = Fornecedor.findAll();
 		actionLabel = "Editar Cadastro -";
 		productName = "(${produtoInstance?.codigo}) ${produtoInstance?.nome}";
-		render(template:"../produto/form",model:[produtoInstance: produtoInstance, actionLabel:actionLabel, productName:productName, listTipoProduto:listTipoProduto]);
+		render(template:"../produto/form",model:[produtoInstance: produtoInstance, actionLabel:actionLabel, productName:productName, listTipoProduto:listTipoProduto, listFornecedor:listFornecedor]);
 	}
 	
 	def salvar(Long id){

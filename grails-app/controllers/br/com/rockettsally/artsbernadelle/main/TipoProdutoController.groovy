@@ -64,7 +64,7 @@ class TipoProdutoController {
 			render result as JSON;
 			
 		} catch (Exception e) {
-			log.error("Ocorreu um erro no método 'salvar' do controller 'Produto' " , e.printStackTrace());
+			log.error("Ocorreu um erro no método 'salvar' do controller 'tipoProduto' " , e.printStackTrace());
 			render(status:HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -89,7 +89,7 @@ class TipoProdutoController {
 			render result as JSON;
 			
 		} catch (Exception e) {
-			log.error("Ocorreu um erro no método 'deletar' do controller 'Produto' " , e.printStackTrace());
+			log.error("Ocorreu um erro no método 'deletar' do controller 'tipoProduto' " , e.printStackTrace());
 			render(status:HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -104,7 +104,7 @@ class TipoProdutoController {
 			render result as JSON;
 			
 			} catch (Exception e) {
-			log.error("Ocorreu um erro no método 'salvar' do controller 'Produto' " , e.printStackTrace());
+			log.error("Ocorreu um erro no método 'salvar' do controller 'tipoProduto' " , e.printStackTrace());
 			render(status:HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -14,6 +14,9 @@
 				Tipo de Produto
 			</th>
 			<th>
+				Fornecedor
+			</th>
+			<th>
 				Valor de Venda
 			</th>
 			<th class="noSort" style="width:50px !important;">
@@ -30,7 +33,10 @@
 				<b>${produtoInstance?.nome}</b>
 			</td>
 			<td>
-				${produtoInstance?.tipoProduto?.nome}
+				${produtoInstance?.tipoProduto?.nome ?: '-'}
+			</td>
+			<td>
+				${produtoInstance?.fornecedor?.nome ?: '-'}
 			</td>
 			<td>
 				${produtoInstance?.valorVenda ? 'R$ ' + new ParseService().numberToString(produtoInstance?.valorVenda) : '-'}

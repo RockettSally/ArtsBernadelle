@@ -2,6 +2,10 @@
 	<g:render template="../tipoproduto/form"></g:render>
 </div>
 
+<div id="cadastroFornecedor" class="display-none">
+	<g:render template="../fornecedor/form"></g:render>
+</div>
+
 <g:form action="salvarCadastroExistente" controller="produto" class="formProduto">
 	<fieldset>
 	<div class="row title-row">
@@ -35,6 +39,11 @@
         	<i class="fas fa-money-bill-alt small prefix"></i>
 	        <g:textField name="valorCusto" id="valorCusto" type="text" class="valorCusto" value="${produtoInstance?.valorCusto}"/>
 	        <label for="valorCusto">Custo</label>
+        </div>
+        <div class="col s12 l4">
+        	<i class="fas fa-list-ul small prefix"></i><label for="tipoProduto">Fornecedor</label>
+	        <g:select name="fornecedor.id" id="fornecedor" class="fornecedor browser-default" from="${listFornecedor}" optionKey="id" optionValue="nome" noSelection="${['null':'Nenhum']}" value="${produtoInstance?.fornecedor?.id}"/>
+       	 	<a id="abrirModalFornecedor" href="javascript:void(0)" class="modal-trigger"><i class="material-icons tiny">add_circle</i> Novo Fornecedor</a>
         </div>
 	</div>
 	<div class="row">
